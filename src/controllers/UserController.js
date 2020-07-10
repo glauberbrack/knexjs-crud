@@ -1,5 +1,5 @@
 const knex = require('../database')
-const { update } = require('../database')
+const { update, delete } = require('../database')
 
 module.exports = {
   async index (req, res) {
@@ -25,11 +25,29 @@ module.exports = {
   async update(req, res, next){
     try {
       const {username} = req.body
-      //59min
+      const {id} = req.params
+
       await knex('users')
       .update({username})
+      .where({id})
+
+      return res.send()
     } catch (error) {
       next(error)
+    }
+  },
+
+  async delete(req, res, next){
+    try {
+      const {id} = req.params
+
+      await knex('users')
+      .where({id})
+      .del()
+
+      return res.send()
+    } catch (error) {
+      
     }
   }
 }
